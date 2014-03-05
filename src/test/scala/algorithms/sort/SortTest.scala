@@ -7,9 +7,23 @@ import scala.util.Random
 
 class SortTest {
 
+    private val ascend = Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+    private val descend = Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+
     @Test
     def selection {
-        for (_ <- 1 to 10) test(new SelectionSort[Int], array(10))
+        val s = new SelectionSort[Int]
+        test(s, ascend)
+        test(s, descend)
+        for (_ <- 1 to 10) test(s, randomArray(10))
+    }
+
+    @Test
+    def insertion {
+        val s = new InsertionSort[Int]
+        test(s, ascend)
+        test(s, descend)
+        for (_ <- 1 to 10) test(s, randomArray(10))
     }
 
     private def test[T <% Ordered[T]](s: Sort[T], a: Array[T]) {
@@ -26,7 +40,7 @@ class SortTest {
         true
     }
 
-    private def array(n: Int) = (0 to n - 1).foldLeft(new Array[Int](n)) {
+    private def randomArray(n: Int) = (0 to n - 1).foldLeft(new Array[Int](n)) {
         (a, i) => a(i) = Random.nextInt(10); a
     }
 
