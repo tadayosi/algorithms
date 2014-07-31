@@ -1,6 +1,6 @@
 package algorithms.sort
 
-class ShellSort[T <% Ordered[T]] extends Sort[T] {
+class ShellSort[T <% Ordered[T]] extends ComparisonSort[T] {
 
   def sort(a: Array[T]) {
     val n = a.length
