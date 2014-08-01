@@ -34,6 +34,14 @@ class SortTest {
     for (_ <- 1 to 10) test(s, randomArray(10))
   }
 
+  @Test
+  def counting {
+    val s = new CountingSort(10)
+    test(s, ascend)
+    test(s, descend)
+    for (_ <- 1 to 10) test(s, randomArray(10))
+  }
+
   private def test[T <% Ordered[T]](s: Sort[T], a: Array[T]) {
     val input = a.mkString(" ")
     s.sort(a)
