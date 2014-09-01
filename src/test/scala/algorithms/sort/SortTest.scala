@@ -4,18 +4,20 @@ import org.hamcrest.Matchers._
 import org.junit.Assert._
 import org.junit.Test
 import scala.util.Random
+import org.junit.Ignore
+import scala.reflect.ClassTag
 
 class SortTest {
 
-  private val ascend = Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-  private val descend = Array(9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
+  private val ascend = array(10)(i => i)
+  private val descend = array(10)(i => 9 - i)
 
   @Test
   def selection {
     val s = new SelectionSort[Int]
     test(s, ascend)
     test(s, descend)
-    for (_ <- 1 to 10) test(s, randomArray(10))
+    for (_ <- 1 to 10) test(s, randomDigits(10))
   }
 
   @Test
@@ -23,7 +25,7 @@ class SortTest {
     val s = new InsertionSort[Int]
     test(s, ascend)
     test(s, descend)
-    for (_ <- 1 to 10) test(s, randomArray(10))
+    for (_ <- 1 to 10) test(s, randomDigits(10))
   }
 
   @Test
@@ -31,7 +33,7 @@ class SortTest {
     val s = new ShellSort[Int]
     test(s, ascend)
     test(s, descend)
-    for (_ <- 1 to 10) test(s, randomArray(10))
+    for (_ <- 1 to 10) test(s, randomDigits(10))
   }
 
   @Test
@@ -39,7 +41,14 @@ class SortTest {
     val s = new CountingSort(10)
     test(s, ascend)
     test(s, descend)
-    for (_ <- 1 to 10) test(s, randomArray(10))
+    for (_ <- 1 to 10) test(s, randomDigits(10))
+  }
+
+  @Test
+  def lsd {
+    val s = new LSD(10)
+    def randomStrings = array(10)(_ => Random.alphanumeric.take(10).mkString)
+    for (_ <- 1 to 10) test(s, randomStrings)
   }
 
   private def test[T <% Ordered[T]](s: Sort[T], a: Array[T]) {
@@ -52,12 +61,17 @@ class SortTest {
 
   private def isSorted[T <% Ordered[T]](a: Array[T]): Boolean = {
     for (i <- 1 to a.length - 1)
-      if (a(i) < a(i - 1)) return false
+      if (a(i - 1) > a(i)) {
+        println(i + ": " + a(i - 1) + " > " + a(i))
+        return false
+      }
     true
   }
 
-  private def randomArray(n: Int) = (0 to n - 1).foldLeft(new Array[Int](n)) {
-    (a, i) => a(i) = Random.nextInt(10); a
-  }
+  private def randomDigits(n: Int): Array[Int] =
+    array(n)(_ => Random.nextInt(10))
+
+  private def array[T: ClassTag](n: Int)(f: Int => T): Array[T] =
+    (0 until n).map(f).toArray
 
 }
