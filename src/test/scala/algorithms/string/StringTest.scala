@@ -3,8 +3,9 @@ package algorithms.string
 import org.hamcrest.Matchers._
 import org.junit.Assert._
 import org.junit.Test
+import algorithms.string.data.SuffixArray
 
-class SuffixArrayTest {
+class StringTest {
 
   @Test
   def suffixArray {

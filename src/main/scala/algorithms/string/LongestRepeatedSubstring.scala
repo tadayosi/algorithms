@@ -1,5 +1,7 @@
 package algorithms.string
 
+import algorithms.string.data.SuffixArray
+
 class LongestRepeatedSubstring {
 
   def apply(str: String): String = {

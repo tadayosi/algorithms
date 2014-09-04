@@ -1,4 +1,4 @@
-package algorithms.string
+package algorithms.string.data
 
 import scala.math._
 
